@@ -26,7 +26,10 @@ namespace Quereseres.Controllers
 
             // 1 - Checking mandatory fields.
             if (email == null || password == null)
-                return null;
+            {
+                ViewBag.LoginError = "Los datos de email y constraseña no pueden estar vacíos.";
+                return View("Index");
+            }
 
             // 2 - Hashs password and get user by credentials.
             password = CryptoHelper.GenerateSHA512String(password);
@@ -34,7 +37,10 @@ namespace Quereseres.Controllers
 
             // 3 - Validate user.
             if (fullUser == null)
-                return null;
+            {
+                ViewBag.LoginError = "No se encuentra el usuario.";
+                return View("Index");
+            }
 
             return Redirect("/Home");
         }
