@@ -9,9 +9,12 @@ namespace Quereseres.Controllers
     public class LoginController : Controller
     {
         private IUserRepository _userRepository;
-        public LoginController(IUserRepository userRepository)
+        private IConfiguration _configuration;
+
+        public LoginController(IUserRepository userRepository, IConfiguration configuration)
         {
             _userRepository = userRepository;
+            _configuration = configuration;
         }
 
         // GET: LoginController
@@ -41,6 +44,13 @@ namespace Quereseres.Controllers
                 ViewBag.LoginError = "No se encuentra el usuario.";
                 return View("Index");
             }
+
+            // 4 - Generate the JWT.
+            var key = _configuration.GetValue<string>("Jwt:Key");
+            var issuer = _configuration.GetValue<string>("Jwt:Issuer");
+            var audience = _configuration.GetValue<string>("Jwt:Audience");
+
+            string token = JWTHelper.GenerateToken(fullUser, key, issuer, audience);
 
             return Redirect("/Home");
         }
