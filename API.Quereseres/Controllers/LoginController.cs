@@ -2,6 +2,7 @@
 using API.Quereseres.Helpers;
 using API.Quereseres.Interfaces;
 using API.Quereseres.Models;
+using API.Quereseres.Wrappers;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 
@@ -23,14 +24,10 @@ namespace API.Quereseres.Controllers
         [HttpPost]
         public IActionResult Login([FromBody] UserLoginDTO user)
         {
-            string errorMessage;
 
             // 1 - Checking mandatory fields.
             if (user.Email == null || user.Password == null)
-            {
-                errorMessage = "Los datos de email y constraseña no pueden estar vacíos.";
-                return BadRequest(errorMessage);
-            }
+                return BadRequest(new SimpleWrapper { Success = false, Message = "Los datos de email y constraseña no pueden estar vacíos." });
 
             // 2 - Hashs password and get user by credentials.
             user.Password = CryptoHelper.GenerateSHA512String(user.Password);
@@ -38,10 +35,7 @@ namespace API.Quereseres.Controllers
 
             // 3 - Validate user.
             if (fullUser == null)
-            {
-                errorMessage = "No se encuentra el usuario.";
-                return BadRequest(errorMessage);
-            }
+                return BadRequest(new SimpleWrapper { Success = false, Message = "No se encuentra el usuario." });
 
             // 4 - Generate the JWT.
             var key = _configuration.GetValue<string>("Jwt:Key");
@@ -50,7 +44,7 @@ namespace API.Quereseres.Controllers
 
             string token = JWTHelper.GenerateToken(fullUser, key, issuer, audience);
 
-            return Ok(token);
+            return Ok(new ComplexWrapper<string> { Success = true, Message = "Token obtained successfuly.", Result = token });
         }
     }
 }

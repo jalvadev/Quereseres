@@ -14,5 +14,13 @@ namespace API.Quereseres.Controllers
 
             return Ok("Home");
         }
+
+        [HttpPost]
+        public IActionResult CreateHome()
+        {
+
+
+            return Ok("CreateHome");
+        }
     }
 }
