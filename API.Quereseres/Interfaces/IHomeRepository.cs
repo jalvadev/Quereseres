@@ -6,6 +6,8 @@ namespace API.Quereseres.Interfaces
     {
         public Home InsertHome(Home home);
 
+        public Home GetHomeByIdAndUser(int homeId, User user);
+
         void Save();
     }
 }

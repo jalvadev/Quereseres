@@ -9,5 +9,7 @@
         public DateTime RecordInitDate { get; set; }
 
         public List<User> UserList { get; set; }
+
+        public List<Room> RoomList { get; set; }
     }
 }

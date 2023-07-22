@@ -1,6 +1,6 @@
 ﻿namespace API.Quereseres.DTOs
 {
-    public class InsertHouseDTO
+    public class HomeDTO
     {
         public string Name { get; set; }
 

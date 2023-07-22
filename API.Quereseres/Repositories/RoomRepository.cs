@@ -4,34 +4,22 @@ using API.Quereseres.Models;
 
 namespace API.Quereseres.Repositories
 {
-    public class HomeRepository : IHomeRepository, IDisposable
+    public class RoomRepository : IRoomRepository, IDisposable
     {
         private readonly QuereseresContext _context;
         private bool _disposed;
 
-        public HomeRepository(QuereseresContext context)
+        public RoomRepository(QuereseresContext context)
         {
             _context = context;
-            _disposed = false;
         }
 
-        public Home InsertHome(Home home)
+        public Room InsertRoom(Room room)
         {
-            var newHome = _context.Houses.Add(home);
+            var newRoom = _context.Rooms.Add(room);
             Save();
 
-            return newHome.Entity;
-        }
-
-        public Home GetHomeByIdAndUser(int homeId, User user)
-        {
-            // obtenemos la casa por id.
-            var home = _context.Houses.Where(h => h.Id == homeId);
-
-            // filtramos las casas por el id del usuario.
-            home = home.Where(h => h.UserList.Contains(user));
-
-            return home.FirstOrDefault();
+            return newRoom.Entity;
         }
 
         public void Save()
