@@ -4,25 +4,23 @@ using API.Quereseres.Models;
 
 namespace API.Quereseres.Repositories
 {
-    public class UserRepository : IUserRepository, IDisposable
+    public class HomeRepository : IHomeRepository, IDisposable
     {
         private readonly QuereseresContext _context;
         private bool _disposed;
 
-        public UserRepository(QuereseresContext context)
+        public HomeRepository(QuereseresContext context)
         {
             _context = context;
             _disposed = false;
         }
 
-        public User GetUserByCredentials(string email, string password)
+        public Home InsertHome(Home home)
         {
-            return _context.Users.Where(u => u.Email == email && u.Password == password).FirstOrDefault();
-        }
+            var newHome = _context.Houses.Add(home);
+            Save();
 
-        public User GetUserById(int id)
-        {
-            return _context.Users.Where(u => u.Id == id).FirstOrDefault();
+            return newHome.Entity;
         }
 
         public void Save()
@@ -30,7 +28,7 @@ namespace API.Quereseres.Repositories
             _context.SaveChanges();
         }
 
-        protected virtual void Dispose(bool disposing)
+        protected void Dispose(bool disposing)
         {
             if (!_disposed)
             {
@@ -41,7 +39,6 @@ namespace API.Quereseres.Repositories
             }
             _disposed = true;
         }
-
         public void Dispose()
         {
             Dispose(true);

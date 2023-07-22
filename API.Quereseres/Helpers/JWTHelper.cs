@@ -32,5 +32,23 @@ namespace API.Quereseres.Helpers
 
             return stringToken;
         }
+
+        public static int GetUserId(HttpContext context)
+        {
+            int userId;
+
+            try
+            {
+                var user = context.User;
+                string userIdString = user.FindFirstValue("Id");
+                userId = Convert.ToInt32(userIdString);
+
+            }catch(Exception ex)
+            {
+                userId = -1;
+            }
+
+            return userId;
+        }
     }
 }

@@ -17,6 +17,7 @@ builder.Services.AddSwaggerGen();
 // DB connection config.
 builder.Services.AddDbContext<QuereseresContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("QuereseresDb")));
 builder.Services.AddScoped(typeof(IUserRepository), typeof(UserRepository));
+builder.Services.AddScoped(typeof(IHomeRepository), typeof(HomeRepository));
 
 // JWT authorization config.
 builder.Services.AddAuthentication(options =>

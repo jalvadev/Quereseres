@@ -1,14 +1,13 @@
 ﻿namespace API.Quereseres.Models
 {
-    public class User
+    public class Home
     {
         public int Id { get; set; }
 
         public string Name { get; set; }
 
-        public string Email { get; set; }
+        public DateTime RecordInitDate { get; set; }
 
-        public string Password { get; set; }
-
+        public List<User> UserList { get; set; }
     }
 }
