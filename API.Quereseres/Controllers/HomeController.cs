@@ -50,7 +50,7 @@ namespace API.Quereseres.Controllers
             if (currentUser == null)
                 return BadRequest(new SimpleWrapper { Success = false, Message = "No se pudo obtener el usuario." });
 
-            // 3 - Insert new House with the user owner.
+            // 3 - Insert new House with the user owner. 
             var home = new Home { Name = newHouse.Name, RecordInitDate = newHouse.RecordInitDate, UserList = new List<User>() };
             home.UserList.Add(currentUser);
             
