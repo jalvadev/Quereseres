@@ -15,7 +15,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 // DB connection config.
-builder.Services.AddDbContext<QuereseresContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("QuereseresDb")));
+builder.Services.AddDbContext<QuereseresContext>(options => options.UseNpgsql(builder.Configuration.GetConnectionString("QuereseresDb")));
 builder.Services.AddScoped(typeof(IUserRepository), typeof(UserRepository));
 builder.Services.AddScoped(typeof(IHomeRepository), typeof(HomeRepository));
 builder.Services.AddScoped(typeof(IRoomRepository), typeof(RoomRepository));
@@ -42,6 +42,7 @@ builder.Services.AddAuthentication(options =>
 builder.Services.AddAuthorization();
 
 var app = builder.Build();
+AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
