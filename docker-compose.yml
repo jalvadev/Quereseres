@@ -1,0 +1,15 @@
+version: '3.4'
+
+services:
+  api.quereseres:
+    image: ${DOCKER_REGISTRY-}apiquereseres
+    build:
+      context: .
+      dockerfile: API.Quereseres/Dockerfile
+  postgrado:
+    image: ${DOCKER_REGISTRY-}postgres
+    ports:
+        - "5432:5432" #Host:Container
+    environment:
+        - POSTGRES_USER=admin
+        - POSTGRES_PASSWORD=pass123
