@@ -1,0 +1,16 @@
+﻿# Etapa 1: Construye la aplicación .NET
+FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build-env
+WORKDIR /app
+
+# Copia los archivos de la aplicación y restaura las dependencias
+COPY . ./
+RUN dotnet restore
+
+# Construye la aplicación en modo Debug
+RUN dotnet build -c Debug -o out
+
+# Etapa 2: Ejecuta la aplicación con dotnet watch
+FROM build-env AS watch-env
+WORKDIR /app
+
+CMD ["dotnet", "watch", "run"]
