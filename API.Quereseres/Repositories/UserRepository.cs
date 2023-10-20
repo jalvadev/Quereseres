@@ -27,7 +27,6 @@ namespace API.Quereseres.Repositories
                 // TODO: Add logger.
                 user = null;
             }
-            finally { Dispose(); }
 
             return user;
         }
@@ -44,7 +43,6 @@ namespace API.Quereseres.Repositories
                 // TODO: Add logger.
                 user = null;
             }
-            finally { Dispose(); }
 
             return user;
         }

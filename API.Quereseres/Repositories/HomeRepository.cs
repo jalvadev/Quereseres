@@ -41,7 +41,6 @@ namespace API.Quereseres.Repositories
                 // TODO: Add logger.
                 homeList = null;
             }
-            finally { Dispose(); }
 
             return homeList;
         }
