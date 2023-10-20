@@ -17,12 +17,36 @@ namespace API.Quereseres.Repositories
 
         public User GetUserByCredentials(string email, string password)
         {
-            return _context.Users.Where(u => u.Email == email && u.Password == password).FirstOrDefault();
+            User user;
+
+            try
+            {
+                user = _context.Users.Where(u => u.Email == email && u.Password == password).FirstOrDefault();
+            }catch(Exception ex)
+            {
+                // TODO: Add logger.
+                user = null;
+            }
+            finally { Dispose(); }
+
+            return user;
         }
 
         public User GetUserById(int id)
         {
-            return _context.Users.Where(u => u.Id == id).FirstOrDefault();
+            User user;
+
+            try
+            {
+                user = _context.Users.Where(u => u.Id == id).FirstOrDefault();
+            }catch (Exception ex)
+            {
+                // TODO: Add logger.
+                user = null;
+            }
+            finally { Dispose(); }
+
+            return user;
         }
 
         public void Save()

@@ -27,8 +27,17 @@ namespace API.Quereseres.Controllers
         [HttpGet]
         public IActionResult Index()
         {
+            // 1 - Get current user.
+            int userId = JWTHelper.GetUserId(HttpContext);
+            if (userId == -1)
+                return BadRequest(new SimpleWrapper { Success = false, Message = "No se pudo obtener el usuario." });
 
-            return Ok("Home");
+            // 2 - Obtenemos casas para el usuario.
+            List<Home> userHomes = _homeRepository.GetUserHomes(userId);
+            if (userHomes == null)
+                return BadRequest(new SimpleWrapper { Success = false, Message = "No se encuentran casas para este usuario." });
+
+            return Ok(new ComplexWrapper<List<Home>> { Success = true, Message = "Lista de casas obtenidas", Result = userHomes });
         }
 
         [HttpPost]

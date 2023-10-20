@@ -24,27 +24,45 @@ namespace API.Quereseres.Controllers
         [HttpPost]
         public IActionResult Login([FromBody] UserLoginDTO user)
         {
-
-            // 1 - Checking mandatory fields.
-            if (user.Email == null || user.Password == null)
+            if (LoginMandatoryFieldsEmpty(user))
                 return BadRequest(new SimpleWrapper { Success = false, Message = "Los datos de email y constraseña no pueden estar vacíos." });
 
-            // 2 - Hashs password and get user by credentials.
+            // Hashs password and get user by credentials.
             user.Password = CryptoHelper.GenerateSHA512String(user.Password);
             User fullUser = _userRepository.GetUserByCredentials(user.Email, user.Password);
 
-            // 3 - Validate user.
-            if (fullUser == null)
+            if (!checkUserOk(fullUser))
                 return BadRequest(new SimpleWrapper { Success = false, Message = "No se encuentra el usuario." });
 
-            // 4 - Generate the JWT.
+            string token = GenerateStringToken(fullUser);
+
+            return Ok(new ComplexWrapper<string> { Success = true, Message = "Token obtained successfuly.", Result = token });
+        }
+
+        #region Private Methods
+        private bool LoginMandatoryFieldsEmpty(UserLoginDTO user)
+        {
+            return string.IsNullOrEmpty(user.Email) || string.IsNullOrEmpty(user.Password);
+        }
+
+        private bool checkUserOk(User user)
+        {
+            return user != null
+                && user.Id > 0
+                && !string.IsNullOrEmpty(user.Email) 
+                && !string.IsNullOrEmpty(user.Name);
+        }
+
+        private string GenerateStringToken(User user)
+        {
             var key = _configuration.GetValue<string>("Jwt:Key");
             var issuer = _configuration.GetValue<string>("Jwt:Issuer");
             var audience = _configuration.GetValue<string>("Jwt:Audience");
 
-            string token = JWTHelper.GenerateToken(fullUser, key, issuer, audience);
+            string token = JWTHelper.GenerateToken(user, key, issuer, audience);
 
-            return Ok(new ComplexWrapper<string> { Success = true, Message = "Token obtained successfuly.", Result = token });
+            return token;
         }
+        #endregion
     }
 }

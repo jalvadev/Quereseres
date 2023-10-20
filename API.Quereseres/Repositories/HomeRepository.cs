@@ -23,6 +23,29 @@ namespace API.Quereseres.Repositories
             return newHome.Entity;
         }
 
+        public List<Home> GetUserHomes(int userId)
+        {
+            List<Home> homeList;
+
+            try
+            {
+                homeList = _context.Houses
+                    .Join(_context.Users,
+                        houses => userId,
+                        users => userId,
+                        (houses, users) => houses)
+                    .Where(user => user.Id == userId)
+                    .ToList();
+            }catch(Exception ex)
+            {
+                // TODO: Add logger.
+                homeList = null;
+            }
+            finally { Dispose(); }
+
+            return homeList;
+        }
+
         public Home GetHomeByIdAndUser(int homeId, User user)
         {
             // obtenemos la casa por id.

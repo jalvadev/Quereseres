@@ -13,3 +13,7 @@ services:
     environment:
         - POSTGRES_USER=admin
         - POSTGRES_PASSWORD=pass123
+    volumes:
+      - postgres-data:/var/lib/pgsql/data #volume name:path for db data.
+volumes:
+  postgres-data:
