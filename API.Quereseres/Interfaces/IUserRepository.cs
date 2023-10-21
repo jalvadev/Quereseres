@@ -9,6 +9,8 @@ namespace API.Quereseres.Interfaces
 
         User GetUserByCredentials(string email, string password);
 
+        public User GetUserByEmail(string email);
+
         void Save();
     }
 }

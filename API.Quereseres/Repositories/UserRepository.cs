@@ -47,6 +47,23 @@ namespace API.Quereseres.Repositories
             return user;
         }
 
+        public User GetUserByEmail(string email)
+        {
+            User user;
+
+            try
+            {
+                user = _context.Users.Where(u => u.Email == email).FirstOrDefault();
+            }
+            catch (Exception ex)
+            {
+                // TODO: Add logger.
+                user = null;
+            }
+
+            return user;
+        }
+
         public void Save()
         {
             _context.SaveChanges();

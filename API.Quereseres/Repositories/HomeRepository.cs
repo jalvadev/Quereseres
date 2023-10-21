@@ -56,6 +56,35 @@ namespace API.Quereseres.Repositories
             return home.FirstOrDefault();
         }
 
+        public bool CheckHomeByIdAndUserEmail(int homeId, string email)
+        {
+            bool exists = true;
+
+            try
+            {
+                var houseUsers = _context.Houses.Where(h => h.Id == homeId).Select(h => h.UserList).FirstOrDefault();
+                if (houseUsers == null)
+                {
+                    exists = false;
+                    return exists;
+                }
+
+                var user = houseUsers.Where(u => u.Email == email).FirstOrDefault();
+                if (user == null)
+                {
+                    exists = false;
+                    return exists;
+                }
+            }
+            catch(Exception ex)
+            {
+                // TODO: Add logger.
+                exists = false;
+            }
+
+            return exists;
+        }
+
         public void Save()
         {
             _context.SaveChanges();

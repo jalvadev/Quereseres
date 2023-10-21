@@ -14,6 +14,22 @@ namespace API.Quereseres.Repositories
             _context = context;
         }
 
+        public Room GetRoomById(int roomId)
+        {
+            Room room;
+
+            try
+            {
+                room = _context.Rooms.Where(r => r.Id == roomId).FirstOrDefault();
+            }catch(Exception ex)
+            {
+                // TODO: Add logger.
+                room = null;
+            }
+
+            return room;
+        }
+
         public Room InsertRoom(Room room)
         {
             var newRoom = _context.Rooms.Add(room);

@@ -19,6 +19,7 @@ builder.Services.AddDbContext<QuereseresContext>(options => options.UseNpgsql(bu
 builder.Services.AddScoped(typeof(IUserRepository), typeof(UserRepository));
 builder.Services.AddScoped(typeof(IHomeRepository), typeof(HomeRepository));
 builder.Services.AddScoped(typeof(IRoomRepository), typeof(RoomRepository));
+builder.Services.AddScoped(typeof(IHouseworkRepository), typeof(HouseworkRepository));
 
 // JWT authorization config.
 builder.Services.AddAuthentication(options =>

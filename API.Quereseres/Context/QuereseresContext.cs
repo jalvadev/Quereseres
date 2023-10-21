@@ -16,6 +16,8 @@ namespace API.Quereseres.Context
 
         public DbSet<Room> Rooms { get; set; }
 
+        public DbSet<Housework> Houseworks { get; set; }
+
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
