@@ -1,6 +1,7 @@
 ﻿using API.Quereseres.Context;
 using API.Quereseres.Interfaces;
 using API.Quereseres.Models;
+using Serilog;
 
 namespace API.Quereseres.Repositories
 {
@@ -17,10 +18,22 @@ namespace API.Quereseres.Repositories
 
         public Home InsertHome(Home home)
         {
-            var newHome = _context.Houses.Add(home);
-            Save();
+            Home newHome;
 
-            return newHome.Entity;
+            try
+            {
+                var result = _context.Houses.Add(home);
+                newHome = result.Entity;
+                Save();
+            }
+            catch(Exception ex) 
+            {
+                Log.Error($"Error inserting home in DB: {ex.Message}");
+                newHome = null;
+            }
+            
+
+            return newHome;
         }
 
         public List<Home> GetUserHomes(int userId)
@@ -38,7 +51,7 @@ namespace API.Quereseres.Repositories
                     .ToList();
             }catch(Exception ex)
             {
-                // TODO: Add logger.
+                Log.Error($"Error getting home list by user from DB: {ex.Message}");
                 homeList = null;
             }
 
@@ -47,13 +60,24 @@ namespace API.Quereseres.Repositories
 
         public Home GetHomeByIdAndUser(int homeId, User user)
         {
-            // obtenemos la casa por id.
-            var home = _context.Houses.Where(h => h.Id == homeId);
+            Home home;
 
-            // filtramos las casas por el id del usuario.
-            home = home.Where(h => h.UserList.Contains(user));
+            try
+            {
+                var houses = _context.Houses.Where(h => h.Id == homeId);
 
-            return home.FirstOrDefault();
+                // filtramos las casas por el id del usuario.
+                houses = houses.Where(h => h.UserList.Contains(user));
+
+                home = houses.FirstOrDefault();
+            }
+            catch(Exception ex)
+            {
+                Log.Error($"Error getting home by user from DB: {ex.Message}");
+                home = null;
+            }
+
+            return home;
         }
 
         public bool CheckHomeByIdAndUserEmail(int homeId, string email)
@@ -78,7 +102,7 @@ namespace API.Quereseres.Repositories
             }
             catch(Exception ex)
             {
-                // TODO: Add logger.
+                Log.Error($"Error checking user/home from DB: {ex.Message}");
                 exists = false;
             }
 

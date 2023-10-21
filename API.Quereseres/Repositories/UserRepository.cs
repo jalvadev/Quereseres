@@ -1,6 +1,7 @@
 ﻿using API.Quereseres.Context;
 using API.Quereseres.Interfaces;
 using API.Quereseres.Models;
+using Serilog;
 
 namespace API.Quereseres.Repositories
 {
@@ -24,7 +25,7 @@ namespace API.Quereseres.Repositories
                 user = _context.Users.Where(u => u.Email == email && u.Password == password).FirstOrDefault();
             }catch(Exception ex)
             {
-                // TODO: Add logger.
+                Log.Error($"Error accessing user by credentials in DB: {ex.Message}");
                 user = null;
             }
 
@@ -40,7 +41,7 @@ namespace API.Quereseres.Repositories
                 user = _context.Users.Where(u => u.Id == id).FirstOrDefault();
             }catch (Exception ex)
             {
-                // TODO: Add logger.
+                Log.Error($"Error accessing user by ID in DB: {ex.Message}");
                 user = null;
             }
 
@@ -57,7 +58,7 @@ namespace API.Quereseres.Repositories
             }
             catch (Exception ex)
             {
-                // TODO: Add logger.
+                Log.Error($"Error accessing user by email in DB: {ex.Message}");
                 user = null;
             }
 

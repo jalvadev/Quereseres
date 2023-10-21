@@ -2,6 +2,7 @@
 using API.Quereseres.Interfaces;
 using API.Quereseres.Models;
 using Microsoft.EntityFrameworkCore;
+using Serilog;
 
 namespace API.Quereseres.Repositories
 {
@@ -25,7 +26,7 @@ namespace API.Quereseres.Repositories
             }
             catch(Exception ex) 
             {
-                // TODO: Add logger.
+                Log.Error($"Error getting housework by ID in DB: {ex.Message}");
                 housework = null;
             }
 
@@ -42,7 +43,7 @@ namespace API.Quereseres.Repositories
             }
             catch (Exception ex)
             {
-                // TODO: Add logger.
+                Log.Error($"Error getting housework by roomId in DB: {ex.Message}");
                 houseworkList = null;
             }
 
@@ -59,7 +60,7 @@ namespace API.Quereseres.Repositories
                 return newHousework.Entity;
             }catch(Exception ex)
             {
-                // TODO: Add logger.
+                Log.Error($"Error inserting new housework in DB: {ex.Message}");
                 return null;
             }
         }

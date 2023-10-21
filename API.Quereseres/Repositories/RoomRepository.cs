@@ -1,6 +1,7 @@
 ﻿using API.Quereseres.Context;
 using API.Quereseres.Interfaces;
 using API.Quereseres.Models;
+using Serilog;
 
 namespace API.Quereseres.Repositories
 {
@@ -23,19 +24,32 @@ namespace API.Quereseres.Repositories
                 room = _context.Rooms.Where(r => r.Id == roomId).FirstOrDefault();
             }catch(Exception ex)
             {
-                // TODO: Add logger.
+                Log.Error($"Error getting room by ID in DB: {ex.Message}");
                 room = null;
             }
 
             return room;
         }
 
-        public Room InsertRoom(Room room)
+        public Room InsertRoom(Room newRoom)
         {
-            var newRoom = _context.Rooms.Add(room);
-            Save();
+            Room room;
 
-            return newRoom.Entity;
+            try
+            {
+                var result = _context.Rooms.Add(newRoom);
+                room = result.Entity;
+
+                Save();
+            }
+            catch(Exception ex)
+            {
+                Log.Error($"Error inserting new room in DB: {ex.Message}");
+                room = null;
+            }
+            
+
+            return room;
         }
 
         public void Save()

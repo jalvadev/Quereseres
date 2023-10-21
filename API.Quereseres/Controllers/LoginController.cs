@@ -5,6 +5,7 @@ using API.Quereseres.Models;
 using API.Quereseres.Wrappers;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
+using Serilog;
 
 namespace API.Quereseres.Controllers
 {
