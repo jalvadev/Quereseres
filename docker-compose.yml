@@ -3,17 +3,19 @@ version: '3.4'
 services:
   api.quereseres:
     image: ${DOCKER_REGISTRY-}apiquereseres
+    ports:
+        - "5001:80"
+        - "5000:433"
     build:
       context: .
       dockerfile: API.Quereseres/Dockerfile
   postgrado:
     image: ${DOCKER_REGISTRY-}postgres
+    container_name: postgrado
     ports:
         - "5432:5432" #Host:Container
     environment:
         - POSTGRES_USER=admin
         - POSTGRES_PASSWORD=pass123
     volumes:
-      - postgres-data:/var/lib/pgsql/data #volume name:path for db data.
-volumes:
-  postgres-data:
+      - "C:/Data/QuereseresDB:/var/lib/postgresql/data" #volume name:path for db data.
