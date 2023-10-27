@@ -59,6 +59,17 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+// If there ir any pending migration, exec it.
+using(var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
+    var context = services.GetRequiredService<QuereseresContext>();
+
+    if (context.Database.GetPendingMigrations().Any())
+    {
+        context.Database.Migrate();
+    }
+}
 app.UseHttpsRedirection();
 
 app.UseAuthentication();
