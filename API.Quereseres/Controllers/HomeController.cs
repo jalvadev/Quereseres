@@ -41,7 +41,7 @@ namespace API.Quereseres.Controllers
         }
 
         [HttpPost]
-        public IActionResult CreateHome([FromBody] HomeDTO newHouse)
+        public IActionResult CreateHome([FromBody] HouseDTO newHouse)
         {
             // 1 - Checking mandatory fields.
             if (newHouse == null || string.IsNullOrEmpty(newHouse.Name))

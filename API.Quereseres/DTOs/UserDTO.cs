@@ -8,6 +8,5 @@
 
         public string Email { get; set; }
 
-
     }
 }
