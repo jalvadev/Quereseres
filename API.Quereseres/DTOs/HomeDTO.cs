@@ -4,6 +4,6 @@
     {
         public string Name { get; set; }
 
-        public DateTime RecordInitDate { get; set; }
+        public int LimitDay { get; set; }
     }
 }

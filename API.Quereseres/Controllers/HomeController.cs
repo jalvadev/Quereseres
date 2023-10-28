@@ -47,7 +47,7 @@ namespace API.Quereseres.Controllers
             if (newHouse == null || string.IsNullOrEmpty(newHouse.Name))
                 return BadRequest(new SimpleWrapper { Success = false, Message = "Los campos son obligatorios" });
 
-            if (newHouse.RecordInitDate <= DateTime.Now)
+            if (newHouse.LimitDay >= 0 && newHouse.LimitDay <= 6)
                 return BadRequest(new SimpleWrapper { Success = false, Message = "La fecha no puede ser hoy ni un día anterior." });
 
             // 2 - Get current user.
@@ -60,7 +60,7 @@ namespace API.Quereseres.Controllers
                 return BadRequest(new SimpleWrapper { Success = false, Message = "No se pudo obtener el usuario." });
 
             // 3 - Insert new House with the user owner. 
-            var home = new Home { Name = newHouse.Name, RecordInitDate = newHouse.RecordInitDate, UserList = new List<User>() };
+            var home = new Home { Name = newHouse.Name, LimitDay = (DayOfWeek)newHouse.LimitDay, UserList = new List<User>() };
             home.UserList.Add(currentUser);
             
             home = _homeRepository.InsertHome(home);
