@@ -8,13 +8,15 @@ namespace API.Quereseres.DTOs
 
         public string Name { get; set; }
 
-        public string Description { get; set; }
+        public string? Description { get; set; }
 
-        public int HomeId { get; set; }
+        public int HouseId { get; set; }
 
         public int RoomId { get; set; }
 
         public string UserEmail { get; set; }
+
+        public UserDTO? AssignedUser { get; set; }
 
     }
 }

@@ -36,11 +36,11 @@ namespace API.Quereseres.Controllers
         public IActionResult NewHousework([FromBody] HouseworkDTO newHousework)
         {
             // 1 - Check mandatory fields.
-            if (newHousework == null || string.IsNullOrEmpty(newHousework.Name) || String.IsNullOrEmpty(newHousework.UserEmail))
+            if (newHousework == null || string.IsNullOrEmpty(newHousework.Name) || string.IsNullOrEmpty(newHousework.UserEmail))
                 return BadRequest(new SimpleWrapper { Success = false, Message = "Los campos nombre y email son obligatorios." });
 
             // 2 - Check user and home.
-            var homeIsCorrect = _homeRepository.CheckHomeByIdAndUserEmail(newHousework.HomeId, newHousework.UserEmail);
+            var homeIsCorrect = _homeRepository.CheckHomeByIdAndUserEmail(newHousework.HouseId, newHousework.UserEmail);
             if (!homeIsCorrect)
                 return BadRequest(new SimpleWrapper { Success = false, Message = "La casa no coincide con el usuario." });
 
@@ -66,7 +66,15 @@ namespace API.Quereseres.Controllers
             if (housework == null)
                 return BadRequest(new SimpleWrapper { Success = false, Message = "No se ha podido insertar la nueva tarea." });
 
+            // 5 - Mapping to DTO.
             newHousework.Id = housework.Id;
+            newHousework.UserEmail = null;
+            newHousework.AssignedUser = new UserDTO
+            {
+                Id = housework.AssignedUser.Id,
+                Name = housework.AssignedUser.Name,
+                Email = housework.AssignedUser.Email
+            };
 
             return Ok(new ComplexWrapper<HouseworkDTO> { Success = true, Message = "Tarea creada.", Result = newHousework });
         }

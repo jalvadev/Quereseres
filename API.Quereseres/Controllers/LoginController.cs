@@ -13,8 +13,8 @@ namespace API.Quereseres.Controllers
     [Route("api/[controller]")]
     public class LoginController : ControllerBase
     {
-        private IConfiguration _configuration;
-        private IUserRepository _userRepository;
+        private readonly IConfiguration _configuration;
+        private readonly IUserRepository _userRepository;
 
         public LoginController(IUserRepository userRepository, IConfiguration configuration)
         {

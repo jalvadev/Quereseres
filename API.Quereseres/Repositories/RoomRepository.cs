@@ -22,6 +22,13 @@ namespace API.Quereseres.Repositories
             try
             {
                 room = _context.Rooms.Where(r => r.Id == roomId).FirstOrDefault();
+
+                if (room != null)
+                    room.House = _context.Houses.Where(h => h.RoomList.Contains(room)).FirstOrDefault();
+
+                if (room != null && room.House != null)
+                    room.HouseworkList = _context.Houseworks.Where(hw => hw.Room.Id == room.Id).ToList();
+
             }catch(Exception ex)
             {
                 Log.Error($"Error getting room by ID in DB: {ex.Message}");
@@ -29,6 +36,22 @@ namespace API.Quereseres.Repositories
             }
 
             return room;
+        }
+
+        public List<Room> GetRoomListByHouseId(int houseId)
+        {
+            List<Room> roomList;
+
+            try
+            {
+                roomList = _context.Rooms.Where(r => r.House.Id == houseId).ToList();
+            }catch(Exception ex) 
+            {
+                Log.Error($"Error getting room list by house ID in DB: {ex.Message}");
+                roomList = null;
+            }
+
+            return roomList;
         }
 
         public Room InsertRoom(Room newRoom)

@@ -10,7 +10,7 @@ namespace API.Quereseres.Interfaces
 
         public bool CheckHomeByIdAndUserEmail(int homeId, string email);
 
-        public List<House> GetUserHomes(int userId);
+        public House GetHouseByUserId(int userId);
 
         void Save();
     }

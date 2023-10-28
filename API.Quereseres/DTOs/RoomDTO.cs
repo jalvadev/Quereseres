@@ -6,6 +6,8 @@
 
         public string Name { get; set; }
 
-        public List<HouseworkDTO> HouseworkList { get; set; }
+        public int HouseId { get; set; }
+
+        public List<HouseworkDTO>? HouseworkList { get; set; }
     }
 }

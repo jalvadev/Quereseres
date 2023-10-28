@@ -1,6 +1,7 @@
 ﻿using API.Quereseres.Context;
 using API.Quereseres.Interfaces;
 using API.Quereseres.Models;
+using Microsoft.EntityFrameworkCore;
 using Serilog;
 
 namespace API.Quereseres.Repositories
@@ -36,26 +37,29 @@ namespace API.Quereseres.Repositories
             return newHome;
         }
 
-        public List<House> GetUserHomes(int userId)
+        public House GetHouseByUserId(int userId)
         {
-            List<House> homeList;
+            House? house;
 
             try
             {
-                homeList = _context.Houses
-                    .Join(_context.Users,
-                        houses => userId,
-                        users => userId,
-                        (houses, users) => houses)
-                    .Where(user => user.Id == userId)
-                    .ToList();
-            }catch(Exception ex)
+                house = null;
+
+                var user = _context.Users.Where(u => u.Id == userId).FirstOrDefault();
+
+                if(user != null)
+                    house = _context.Houses.Where(h => h.UserList.Contains(user)).FirstOrDefault();
+
+                if(house != null)
+                    house.UserList = _context.Users.Where(u => u.House != null && u.House.Id == house.Id).ToList();
+            }
+            catch(Exception ex)
             {
                 Log.Error($"Error getting home list by user from DB: {ex.Message}");
-                homeList = null;
+                house = null;
             }
 
-            return homeList;
+            return house;
         }
 
         public House GetHomeByIdAndUser(int homeId, User user)
