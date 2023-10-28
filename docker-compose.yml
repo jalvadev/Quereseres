@@ -3,6 +3,7 @@ version: '3.4'
 services:
   api.quereseres:
     image: ${DOCKER_REGISTRY-}apiquereseres
+    container_name: quereseres
     ports:
         - "5001:80"
         - "5000:433"
