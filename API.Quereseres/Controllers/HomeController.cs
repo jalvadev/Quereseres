@@ -33,11 +33,11 @@ namespace API.Quereseres.Controllers
                 return BadRequest(new SimpleWrapper { Success = false, Message = "No se pudo obtener el usuario." });
 
             // 2 - Obtenemos casas para el usuario.
-            List<Home> userHomes = _homeRepository.GetUserHomes(userId);
+            List<House> userHomes = _homeRepository.GetUserHomes(userId);
             if (userHomes == null)
                 return BadRequest(new SimpleWrapper { Success = false, Message = "No se encuentran casas para este usuario." });
 
-            return Ok(new ComplexWrapper<List<Home>> { Success = true, Message = "Lista de casas obtenidas", Result = userHomes });
+            return Ok(new ComplexWrapper<List<House>> { Success = true, Message = "Lista de casas obtenidas", Result = userHomes });
         }
 
         [HttpPost]
@@ -60,14 +60,14 @@ namespace API.Quereseres.Controllers
                 return BadRequest(new SimpleWrapper { Success = false, Message = "No se pudo obtener el usuario." });
 
             // 3 - Insert new House with the user owner. 
-            var home = new Home { Name = newHouse.Name, LimitDay = (DayOfWeek)newHouse.LimitDay, UserList = new List<User>() };
+            var home = new House { Name = newHouse.Name, LimitDay = (DayOfWeek)newHouse.LimitDay, UserList = new List<User>() };
             home.UserList.Add(currentUser);
             
             home = _homeRepository.InsertHome(home);
             if (home == null)
                 return BadRequest(new SimpleWrapper { Success = false, Message = "No se pudo insertar la casa." });
 
-            return Ok(new ComplexWrapper<Home> { Success = true, Message = "Casa insertada correctamente", Result = home });
+            return Ok(new ComplexWrapper<House> { Success = true, Message = "Casa insertada correctamente", Result = home });
         }
 
         [HttpPost("NewRoom")]
@@ -87,7 +87,7 @@ namespace API.Quereseres.Controllers
                 return BadRequest(new SimpleWrapper { Success = false, Message = "No se pudo obtener el usuario." });
 
             // 3 - Get home by homeId and user.
-            Home home = _homeRepository.GetHomeByIdAndUser(homeId, currentUser);
+            House home = _homeRepository.GetHomeByIdAndUser(homeId, currentUser);
             if (home == null)
                 return BadRequest(new SimpleWrapper { Success = false, Message = "No se pudo obtener la casa o no pertenece a este usuario."});
 

@@ -16,9 +16,9 @@ namespace API.Quereseres.Repositories
             _disposed = false;
         }
 
-        public Home InsertHome(Home home)
+        public House InsertHome(House home)
         {
-            Home newHome;
+            House newHome;
 
             try
             {
@@ -36,9 +36,9 @@ namespace API.Quereseres.Repositories
             return newHome;
         }
 
-        public List<Home> GetUserHomes(int userId)
+        public List<House> GetUserHomes(int userId)
         {
-            List<Home> homeList;
+            List<House> homeList;
 
             try
             {
@@ -58,9 +58,9 @@ namespace API.Quereseres.Repositories
             return homeList;
         }
 
-        public Home GetHomeByIdAndUser(int homeId, User user)
+        public House GetHomeByIdAndUser(int homeId, User user)
         {
-            Home home;
+            House home;
 
             try
             {

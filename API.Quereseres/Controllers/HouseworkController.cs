@@ -59,7 +59,7 @@ namespace API.Quereseres.Controllers
             {
                 Name = newHousework.Name,
                 Description = newHousework.Description,
-                User = user,
+                AssignedUser = user,
                 Room = room,
             };
             housework = _houseworkRepository.InsertHousework(housework);

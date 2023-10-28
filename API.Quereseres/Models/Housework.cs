@@ -9,7 +9,7 @@
 
         public string Description { get; set; }
 
-        public User User { get; set; }
+        public User AssignedUser { get; set; }
 
         public Room Room { get; set; }
     }

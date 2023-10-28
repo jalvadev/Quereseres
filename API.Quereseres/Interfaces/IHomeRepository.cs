@@ -4,13 +4,13 @@ namespace API.Quereseres.Interfaces
 {
     public interface IHomeRepository : IDisposable
     {
-        public Home InsertHome(Home home);
+        public House InsertHome(House home);
 
-        public Home GetHomeByIdAndUser(int homeId, User user);
+        public House GetHomeByIdAndUser(int homeId, User user);
 
         public bool CheckHomeByIdAndUserEmail(int homeId, string email);
 
-        public List<Home> GetUserHomes(int userId);
+        public List<House> GetUserHomes(int userId);
 
         void Save();
     }

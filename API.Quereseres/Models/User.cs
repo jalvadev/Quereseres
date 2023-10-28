@@ -10,5 +10,6 @@
 
         public string Password { get; set; }
 
+        public House? House { get; set; }
     }
 }

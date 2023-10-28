@@ -12,16 +12,13 @@ namespace API.Quereseres.Context
 
         public DbSet<User> Users { get; set; }
 
-        public DbSet<Home> Houses { get; set; }
+        public DbSet<House> Houses { get; set; }
 
         public DbSet<Room> Rooms { get; set; }
 
         public DbSet<Housework> Houseworks { get; set; }
 
+        public DbSet<HouseworkWeekly> HouseworkWeeklies { get; set; }
 
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
-        {
-            base.OnModelCreating(modelBuilder);
-        }
     }
 }

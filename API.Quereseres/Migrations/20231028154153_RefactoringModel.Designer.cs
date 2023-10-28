@@ -3,6 +3,7 @@ using System;
 using API.Quereseres.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace API.Quereseres.Migrations
 {
     [DbContext(typeof(QuereseresContext))]
-    partial class QuereseresContextModelSnapshot : ModelSnapshot
+    [Migration("20231028154153_RefactoringModel")]
+    partial class RefactoringModel
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -71,30 +74,6 @@ namespace API.Quereseres.Migrations
                     b.HasIndex("RoomId");
 
                     b.ToTable("Houseworks");
-                });
-
-            modelBuilder.Entity("API.Quereseres.Models.HouseworkWeekly", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("HouseworkId")
-                        .HasColumnType("integer");
-
-                    b.Property<bool>("IsDone")
-                        .HasColumnType("boolean");
-
-                    b.Property<DateTime>("LimitDate")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("HouseworkId");
-
-                    b.ToTable("HouseworkWeeklies");
                 });
 
             modelBuilder.Entity("API.Quereseres.Models.Room", b =>
@@ -166,17 +145,6 @@ namespace API.Quereseres.Migrations
                     b.Navigation("AssignedUser");
 
                     b.Navigation("Room");
-                });
-
-            modelBuilder.Entity("API.Quereseres.Models.HouseworkWeekly", b =>
-                {
-                    b.HasOne("API.Quereseres.Models.Housework", "Housework")
-                        .WithMany()
-                        .HasForeignKey("HouseworkId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Housework");
                 });
 
             modelBuilder.Entity("API.Quereseres.Models.Room", b =>

@@ -1,6 +1,6 @@
 ﻿namespace API.Quereseres.Models
 {
-    public class Home
+    public class House
     {
         public int Id { get; set; }
 
