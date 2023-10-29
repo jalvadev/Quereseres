@@ -15,13 +15,11 @@ namespace API.Quereseres.Controllers
     {
         private readonly IUserRepository _userRepository;
         private readonly IHomeRepository _homeRepository;
-        private readonly IRoomRepository _roomRepository;
 
-        public HomeController(IUserRepository userRepository, IHomeRepository homeRepository, IRoomRepository roomRepository)
+        public HomeController(IUserRepository userRepository, IHomeRepository homeRepository)
         {
             _userRepository = userRepository;
             _homeRepository = homeRepository;
-            _roomRepository = roomRepository;
         }
 
         [HttpGet]
@@ -86,49 +84,6 @@ namespace API.Quereseres.Controllers
             };
 
             return Ok(new ComplexWrapper<HouseDTO> { Success = true, Message = "Casa insertada correctamente", Result = house });
-        }
-
-        [HttpPost("NewRoom")]
-        public IActionResult AddRoomToHome([FromBody] RoomDTO newRoom)
-        {
-            // 1 - Checking mandatory fields.
-            if (string.IsNullOrEmpty(newRoom.Name))
-                return BadRequest(new SimpleWrapper { Success = false, Message = "El campo nombre es obligatorio." });
-
-            // 2 - Get current user.
-            int userId = JWTHelper.GetUserId(HttpContext);
-            if (userId == -1)
-                return BadRequest(new SimpleWrapper { Success = false, Message = "No se pudo obtener el usuario." });
-
-            User currentUser = _userRepository.GetUserById(userId);
-            if (currentUser == null)
-                return BadRequest(new SimpleWrapper { Success = false, Message = "No se pudo obtener el usuario." });
-
-            // 3 - Get home by homeId and user.
-            House home = _homeRepository.GetHomeByIdAndUser(newRoom.HouseId, currentUser);
-            if (home == null)
-                return BadRequest(new SimpleWrapper { Success = false, Message = "No se pudo obtener la casa o no pertenece a este usuario."});
-
-            if (home.RoomList == null)
-                home.RoomList = new List<Room>();
-
-            // 4 - Insert new room.
-            Room room = new Room() { Name = newRoom.Name };
-            home.RoomList.Add(room);
-
-            room = _roomRepository.InsertRoom(room);
-            if (room == null)
-                return BadRequest(new SimpleWrapper { Success = false, Message = "No se pudo insertar la habitación" });
-
-            // 5 - Mapping to DTO.
-            RoomDTO roomDto = new RoomDTO
-            {
-                Id = room.Id,
-                Name = room.Name,
-                HouseId = room.House.Id,
-            };
-
-            return Ok(new ComplexWrapper<RoomDTO> { Success = true, Message = "Habitación creada.", Result = roomDto });
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using API.Quereseres.DTOs;
+using API.Quereseres.Helpers;
 using API.Quereseres.Interfaces;
 using API.Quereseres.Models;
 using API.Quereseres.Repositories;
@@ -13,10 +14,10 @@ namespace API.Quereseres.Controllers
     [Authorize]
     public class HouseworkController : ControllerBase
     {
-        private IUserRepository _userRepository;
-        private IHomeRepository _homeRepository;
-        private IRoomRepository _roomRepository;
-        private IHouseworkRepository _houseworkRepository;
+        private readonly IUserRepository _userRepository;
+        private readonly IHomeRepository _homeRepository;
+        private readonly IRoomRepository _roomRepository;
+        private readonly IHouseworkRepository _houseworkRepository;
 
         public HouseworkController(IUserRepository userRepository, IHomeRepository homeRepository, IRoomRepository roomRepository, IHouseworkRepository houseworkRepository) 
         {
@@ -26,10 +27,42 @@ namespace API.Quereseres.Controllers
             _houseworkRepository = houseworkRepository;
         }
 
+        /// <summary>
+        /// Return a list of houseworks.
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
         public IActionResult Index()
         {
-            return Ok("Houseworks");
+            // 1 - Get current user.
+            int userId = JWTHelper.GetUserId(HttpContext);
+            if (userId == -1)
+                return BadRequest(new SimpleWrapper { Success = false, Message = "No se pudo obtener el usuario." });
+
+            // 2 - Check user belongs to this house.
+            House userHouse = _homeRepository.GetHouseByUserId(userId);
+            if (userHouse == null)
+                return BadRequest(new SimpleWrapper { Success = false, Message = "No se encuentran casas para este usuario." });
+
+
+            bool userBelongsToHouse = userHouse.UserList.Exists(u => u.Id == userId);
+            if (!userBelongsToHouse)
+                return BadRequest(new SimpleWrapper { Success = false, Message = "El usuario no pertenece a la casa indicada." });
+
+            // 3 - Get list of housework.
+            List<Housework> houseworkList = _houseworkRepository.ListHouswork(userHouse.Id);
+
+            // 4 - Mapping to DTO.
+            List<HouseworkDTO> houseworkDTOList = houseworkList.Select(h => new HouseworkDTO
+            {
+                Id = h.Id,
+                Name = h.Name,
+                Description = h.Description,
+                RoomName = h.Room.Name,
+                UserName = h.AssignedUser.Name
+            }).ToList();
+
+            return Ok(new ComplexWrapper<List<HouseworkDTO>> { Success = true, Message = "Lista de tareas obtenidas.", Result = houseworkDTOList });
         }
 
         [HttpPost]

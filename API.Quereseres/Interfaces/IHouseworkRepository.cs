@@ -8,6 +8,8 @@ namespace API.Quereseres.Interfaces
 
         public Housework GetHouseworkById(int houseworkId);
 
+        public List<Housework> ListHouswork(int houseId);
+
         public Housework InsertHousework(Housework housework);
 
         void Save();

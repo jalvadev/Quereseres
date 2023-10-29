@@ -50,6 +50,22 @@ namespace API.Quereseres.Repositories
             return houseworkList;
         }
 
+        public List<Housework> ListHouswork(int houseId)
+        {
+            List<Housework> houseworkList;
+
+            try
+            {
+                houseworkList = _context.Houseworks.Where(h => h.Room.House.Id == houseId).ToList();
+            }catch(Exception ex)
+            {
+                Log.Error($"Error getting housework by house in DB: {ex.Message}");
+                houseworkList = null;
+            }
+
+            return houseworkList;
+        }
+
         public Housework InsertHousework(Housework housework)
         {
             try
@@ -86,6 +102,5 @@ namespace API.Quereseres.Repositories
             Dispose(true);
             GC.SuppressFinalize(this);
         }
-
     }
 }

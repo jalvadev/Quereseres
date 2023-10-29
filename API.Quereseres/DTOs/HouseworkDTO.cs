@@ -14,7 +14,11 @@ namespace API.Quereseres.DTOs
 
         public int RoomId { get; set; }
 
+        public string RoomName { get; set; }
+
         public string UserEmail { get; set; }
+
+        public string UserName { get; set; }
 
         public UserDTO? AssignedUser { get; set; }
 
