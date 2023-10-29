@@ -37,6 +37,25 @@ namespace API.Quereseres.Repositories
             return newHome;
         }
 
+        public House GetHouseById(int id)
+        {
+            House? house;
+
+            try
+            {
+                house = null;
+
+                house = _context.Houses.Where(h => h.Id == id).FirstOrDefault();
+            }
+            catch (Exception ex)
+            {
+                Log.Error($"Error getting house by Id from DB: {ex.Message}");
+                house = null;
+            }
+
+            return house;
+        }
+
         public House GetHouseByUserId(int userId)
         {
             House? house;

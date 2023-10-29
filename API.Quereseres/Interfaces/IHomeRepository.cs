@@ -6,6 +6,8 @@ namespace API.Quereseres.Interfaces
     {
         public House InsertHome(House home);
 
+        public House GetHouseById(int id);
+
         public House GetHomeByIdAndUser(int homeId, User user);
 
         public bool CheckHomeByIdAndUserEmail(int homeId, string email);
