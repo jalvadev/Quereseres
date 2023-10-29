@@ -6,7 +6,7 @@ using Serilog;
 
 namespace API.Quereseres.Repositories
 {
-    public class HouseworkRepository : IHouseworkRepository, IDisposable
+    public class HouseworkRepository : IHouseworkRepository
     {
         private readonly QuereseresContext _context;
         private bool _disposed;
